@@ -36,6 +36,7 @@ pages = [
         "Evolutionary.jl" => "optimization_packages/evolutionary.md",
         "GCMAES.jl" => "optimization_packages/gcmaes.md",
         "Ipopt.jl" => "optimization_packages/ipopt.md",
+        "JSOSolvers.jl" => "optimization_packages/jsosolvers.md",
         "LBFGSB.jl" => "optimization_packages/lbfgsb.md",
         "MadNLP.jl" => "optimization_packages/madnlp.md",
         "Manopt.jl" => "optimization_packages/manopt.md",

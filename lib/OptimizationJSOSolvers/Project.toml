@@ -1,0 +1,42 @@
+name = "OptimizationJSOSolvers"
+uuid = "23128e0e-bdb8-4aae-81ea-6680a3689b41"
+version = "1.0.0"
+authors = ["nifets <stefanmanol@gmail.com> and contributors"]
+
+[deps]
+JSOSolvers = "10dff2fc-5484-5881-a0e0-c90441020f8a"
+NLPModels = "a4795742-8479-5a88-8948-cc11e1c8c1a6"
+OptimizationBase = "bca83a33-5cc9-4baa-983d-23429ab6bcbb"
+OptimizationNLPModels = "064b21be-54cf-11ef-1646-cdfee32b588f"
+SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
+SolverCore = "ff4d7338-4cf1-434d-91df-b86cb86fb843"
+
+[sources]
+OptimizationBase = {path = "../OptimizationBase"}
+OptimizationNLPModels = {path = "../OptimizationNLPModels"}
+
+[compat]
+ADTypes = "1.18"
+ForwardDiff = "1"
+JSOSolvers = "0.14"
+NLPModels = "0.21.5"
+OptimizationBase = "5.5.0"
+OptimizationNLPModels = "1.7"
+Pkg = "1"
+SafeTestsets = "0.1"
+SciMLBase = "3"
+SciMLTesting = "2.8"
+SolverCore = "0.3"
+Test = "1.10"
+julia = "1.10"
+
+[extras]
+ADTypes = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
+SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["ADTypes", "ForwardDiff","Pkg", "SafeTestsets", "SciMLTesting", "Test"]

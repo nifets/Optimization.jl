@@ -27,6 +27,7 @@ OptimizationCMAEvolutionStrategy = "bd407f91-200f-4536-9381-e4ba712f53f8"
 OptimizationEvolutionary = "cb963754-43f6-435e-8d4b-99009ff27753"
 OptimizationGCMAES = "6f0a0517-dbc2-4a7a-8a20-99ae7f27e911"
 OptimizationIpopt = "43fad042-7963-4b32-ab19-e2a4f9a67124"
+OptimizationJSOSolvers = "23128e0e-bdb8-4aae-81ea-6680a3689b41"
 OptimizationLBFGSB = "22f7324a-a79d-40f2-bebe-3af60c77bd15"
 OptimizationMOI = "fd9f6733-72f4-499f-8506-86b2bdd0dea1"
 OptimizationMadNLP = "5d9c809f-c847-4062-9fba-1793bbfef577"
@@ -85,6 +86,9 @@ path = "../lib/OptimizationIpopt"
 
 [sources.OptimizationLBFGSB]
 path = "../lib/OptimizationLBFGSB"
+
+[sources.OptimizationJSOSolvers]
+path = "../lib/OptimizationJSOSolvers"
 
 [sources.OptimizationMOI]
 path = "../lib/OptimizationMOI"
@@ -174,6 +178,7 @@ OptimizationCMAEvolutionStrategy = "0.3"
 OptimizationEvolutionary = "0.4"
 OptimizationGCMAES = "0.3"
 OptimizationIpopt = "1"
+OptimizationJSOSolvers = "1"
 OptimizationLBFGSB = "1"
 OptimizationMOI = "1"
 OptimizationMadNLP = "2"

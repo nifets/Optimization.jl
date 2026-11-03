@@ -5,7 +5,7 @@ using ADTypes
 using SciMLBase
 using OptimizationAuglag, OptimizationBBO, OptimizationBase
 using OptimizationCMAEvolutionStrategy, OptimizationGCMAES, OptimizationIpopt
-using OptimizationLBFGSB, OptimizationMadNLP, OptimizationManopt
+using OptimizationJSOSolvers, OptimizationLBFGSB, OptimizationMadNLP, OptimizationManopt
 using OptimizationNLPModels, OptimizationNOMAD, OptimizationODE
 using OptimizationPolyalgorithms, OptimizationPRIMA, OptimizationPyCMA
 using OptimizationQuadDIRECT, OptimizationSciPy, OptimizationSophia
@@ -23,7 +23,7 @@ makedocs(
         Optimization, Optimization.OptimizationBase,
         OptimizationAuglag, OptimizationBBO, OptimizationBase,
         OptimizationCMAEvolutionStrategy, OptimizationGCMAES, OptimizationIpopt,
-        OptimizationLBFGSB, OptimizationMadNLP, OptimizationManopt,
+        OptimizationJSOSolvers, OptimizationLBFGSB, OptimizationMadNLP, OptimizationManopt,
         OptimizationNLPModels, OptimizationNOMAD, OptimizationODE,
         OptimizationPolyalgorithms, OptimizationPRIMA, OptimizationPyCMA,
         OptimizationQuadDIRECT, OptimizationSciPy, OptimizationSophia,

@@ -41,6 +41,7 @@ offered by them:
   - OptimizationEvolutionary for [Evolutionary.jl](https://github.com/SciML/Evolutionary.jl) (see also [this documentation](https://sciml.github.io/Evolutionary.jl/stable/))
   - OptimizationGCMAES for [GCMAES.jl](https://github.com/AStupidBear/GCMAES.jl)
   - OptimizationIpopt for [Ipopt.jl](https://github.com/jump-dev/Ipopt.jl)
+  - OptimizationJSOSolvers for [JSOSolvers.jl](https://github.com/JuliaSmoothOptimizers/JSOSolvers.jl) (TRON: bound-constrained trust-region Newton)
   - OptimizationLBFGSB for [LBFGSB.jl](https://github.com/Gnimuc/LBFGSB.jl)
   - OptimizationMadNLP for [MadNLP.jl](https://github.com/madsuite-org/MadNLP.jl)
   - OptimizationManopt for [Manopt.jl](https://github.com/JuliaManifolds/Manopt.jl) (optimization on manifolds)

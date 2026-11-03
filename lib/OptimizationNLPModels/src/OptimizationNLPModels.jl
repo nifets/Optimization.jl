@@ -104,6 +104,8 @@ struct NLPModelsAdaptor{C, T, HB} <: NLPModels.AbstractNLPModel{T, Vector{T}}
     hess_rows::Vector{Int}
     hess_cols::Vector{Int}
     hess_buffer::HB  # Can be Vector{T} or Matrix{T}
+    hess_vals::Vector{T}
+    hess_at::Vector{T}
 end
 
 function _enumerate_dense_structure(ncon, nvar)
@@ -190,7 +192,8 @@ function NLPModelsAdaptor(
     return NLPModelsAdaptor{C, T, typeof(hess_buffer)}(
         cache, meta, counters,
         jac_rows, jac_cols, jac_buffer,
-        hess_rows, hess_cols, hess_buffer
+        hess_rows, hess_cols, hess_buffer,
+        zeros(T, length(hess_rows)), fill(T(NaN), meta.nvar)
     )
 end
 
@@ -292,6 +295,29 @@ function NLPModels.hess_coord!(
     end
 
     return H
+end
+
+function NLPModels.hprod!(
+        nlp::NLPModelsAdaptor, x::AbstractVector, y::AbstractVector, v::AbstractVector,
+        Hv::AbstractVector; obj_weight = one(eltype(x))
+    )
+    if !isempty(y)
+        vals = NLPModels.hess_coord!(nlp, x, y, similar(x, nlp.meta.nnzh); obj_weight)
+        return NLPModels.hprod!(nlp, nlp.hess_rows, nlp.hess_cols, vals, v, Hv)
+    end
+    objective_hprod!(nlp.cache.f.hv, nlp, x, v, Hv)
+    Hv .*= obj_weight
+    return Hv
+end
+
+objective_hprod!(hv, ::NLPModelsAdaptor, x, v, Hv) = hv(Hv, x, v)
+
+function objective_hprod!(::Nothing, nlp::NLPModelsAdaptor, x, v, Hv)
+    if x != nlp.hess_at
+        NLPModels.hess_coord!(nlp, x, similar(x, 0), nlp.hess_vals)
+        copyto!(nlp.hess_at, x)
+    end
+    return NLPModels.hprod!(nlp, nlp.hess_rows, nlp.hess_cols, nlp.hess_vals, v, Hv)
 end
 
 # Solvers only *allow* `cons_vjp`/`cons_jvp` (`allowsconsvjp`), so the instantiated function

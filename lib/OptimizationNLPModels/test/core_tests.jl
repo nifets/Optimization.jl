@@ -263,3 +263,47 @@ end
         @test NLPModels.jtprod!(nlp, x0, Float64[], fill(NaN, 3)) == zeros(3)
     end
 end
+
+@testset "hprod! uses hv and falls back to hess_coord!" begin
+    import ADTypes
+    import ForwardDiff
+
+    rosenbrock(x, p) = (1 - x[1])^2 + 100 * (x[2] - x[1]^2)^2
+    x0 = [0.3, -0.5]
+    direction = [1.2, -0.7]
+    Href = ForwardDiff.hessian(x -> rosenbrock(x, nothing), x0)
+    f = OptimizationBase.OptimizationFunction(rosenbrock, ADTypes.AutoForwardDiff())
+    meta = NLPModels.NLPModelMeta(2; x0 = x0, minimize = true)
+    adaptor(inst) = OptimizationNLPModels.NLPModelsAdaptor(
+        (f = inst, p = nothing, lcons = nothing, ucons = nothing), meta,
+        NLPModels.Counters()
+    )
+
+    @testset "hv = $hv" for hv in (true, false)
+        inst = OptimizationBase.instantiate_function(f, x0, f.adtype, nothing, 0; h = true, hv)
+        @test isnothing(inst.hv) == !hv
+        nlp = adaptor(inst)
+        @test NLPModels.hprod(nlp, x0, direction) ≈ Href * direction
+        @test NLPModels.hprod(nlp, x0, direction; obj_weight = 2.0) ≈ 2 * Href * direction
+    end
+
+    @testset "NoAD uses the supplied hess, evaluated once per x" begin
+        approx_hessian = [2.0 0.5; 0.5 1.0]
+        hess_calls = Ref(0)
+        custom_hess(H, x, p) = (hess_calls[] += 1; H .= approx_hessian)
+        f_noad = OptimizationBase.OptimizationFunction(rosenbrock; hess = custom_hess)
+        inst = OptimizationBase.instantiate_function(f_noad, x0, OptimizationBase.NoAD(), nothing, 0)
+        @test isnothing(inst.hv)
+        nlp = adaptor(inst)
+        x = copy(x0)
+        for _ in 1:5
+            @test NLPModels.hprod(nlp, x, direction) ≈ approx_hessian * direction
+        end
+        @test hess_calls[] == 1
+        @test NLPModels.hprod(nlp, x, direction; obj_weight = 2.0) ≈ 2 * approx_hessian * direction
+        @test hess_calls[] == 1
+        x .+= 0.1
+        NLPModels.hprod(nlp, x, direction)
+        @test hess_calls[] == 2
+    end
+end

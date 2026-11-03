@@ -28,6 +28,16 @@ optf = OptimizationFunction(rosenbrock, ADTypes.AutoForwardDiff())
         @test sol.objective ≈ 0.0 atol = 1.0e-10
     end
 
+    @testset "NoAD with a user grad and scaled hess" begin
+        grad!(G, x, p) = ForwardDiff.gradient!(G, x -> rosenbrock(x, p), x)
+        hess!(H, x, p) = (ForwardDiff.hessian!(H, x -> rosenbrock(x, p), x); H .*= 2)
+        noad = OptimizationFunction(rosenbrock; grad = grad!, hess = hess!)
+        prob = OptimizationProblem(noad, zeros(2), rosenbrock_params; lb = [-1.0, -1.0], ub = [0.5, 0.5])
+        sol = solve(prob, TRON())
+        @test successful_retcode(sol)
+        @test sol.u ≈ [0.5, 0.25] atol = 1.0e-6
+    end
+
     @testset "maxiters" begin
         prob = OptimizationProblem(optf, [-1.2, 1.0], rosenbrock_params)
         sol = solve(prob, TRON(); maxiters = 2)

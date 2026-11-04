@@ -307,3 +307,17 @@ end
         @test hess_calls[] == 2
     end
 end
+
+@testset "build_nlpmodel_meta with non-Vector u0 and bounds" begin
+    storage = [0.0, 0.0, -1.5, -3.0, 4.0, 3.0]
+    f = OptimizationBase.OptimizationFunction((u, p) -> sum(abs2, u))
+    cache_like = (
+        f = f, u0 = view(storage, 1:2), lb = view(storage, 3:4), ub = view(storage, 5:6),
+        lcons = nothing, ucons = nothing, sense = nothing,
+    )
+    meta = OptimizationNLPModels.build_nlpmodel_meta(cache_like)
+    @test meta.x0 isa Vector{Float64}
+    @test meta.x0 == [0.0, 0.0]
+    @test meta.lvar == [-1.5, -3.0]
+    @test meta.uvar == [4.0, 3.0]
+end

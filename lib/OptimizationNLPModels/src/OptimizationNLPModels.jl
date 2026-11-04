@@ -411,18 +411,18 @@ function build_nlpmodel_meta(cache)
     nvar = length(cache.u0)
     ncon = !isnothing(cache.lcons) ? length(cache.lcons) : 0
 
-    lvar = something(cache.lb, fill(-Inf, nvar))
-    uvar = something(cache.ub, fill(Inf, nvar))
-    lcon = something(cache.lcons, T[])
-    ucon = something(cache.ucons, T[])
+    lvar = Vector{T}(something(cache.lb, fill(-Inf, nvar)))
+    uvar = Vector{T}(something(cache.ub, fill(Inf, nvar)))
+    lcon = Vector{T}(something(cache.lcons, T[]))
+    ucon = Vector{T}(something(cache.ucons, T[]))
 
     return NLPModels.NLPModelMeta(
         nvar;
         ncon,
         nnzj = _get_nnzj(cache.f, ncon, nvar),
         nnzh = _get_nnzh(cache.f, ncon, nvar),
-        x0 = cache.u0,
-        y0 = zeros(eltype(cache.u0), ncon),
+        x0 = Vector{T}(cache.u0),
+        y0 = zeros(T, ncon),
         lvar,
         uvar,
         lcon,
